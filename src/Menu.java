@@ -26,11 +26,11 @@ private Plato plato1;
         return null;
     }
     public void datosQuemados(){
-    listaPlatos.add(new Plato("Plato1",2.5, 3.4,4));
-    listaPlatos.add(new Plato("Plato1",2.5, 3.4,4));
-    listaPlatos.add(new Plato("Plato1",2.5, 3.4,4));
-    listaPlatos.add(new Plato("Plato1",2.5, 3.4,4));
-    listaPlatos.add(new Plato("Plato1",2.5, 3.4,4));
+    listaPlatos.add(new Plato("Plato1",2.5, 2.4,4));
+    listaPlatos.add(new Plato("Plato2",3, 1.2,5));
+    listaPlatos.add(new Plato("Plato3",3.5, 3.4,6));
+    listaPlatos.add(new Plato("Plato4",4.5, 5.6,7));
+    listaPlatos.add(new Plato("Plato4",5.5, 7.8,8));
     }
     public List<Plato> getListaPlatos() {
         return listaPlatos;

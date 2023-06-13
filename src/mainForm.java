@@ -38,13 +38,28 @@ public class mainForm extends JFrame {
         textoModifPrecio.setEnabled(false);
         textoModifCalorias.setEnabled(false);
         textoModifPreparacion.setEnabled(false);
+        eliminarButton.setEnabled(false);
 
         ingresarPlatoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            menu.ingresarPlato(new Plato(textIngresoNombre.getText(),Double.parseDouble(textIngresoPrecio.getText()),
-                    Double.parseDouble(textIngresoCalorias.getText()),Integer.parseInt(textIngresoPrecio.getText())));
-                textAIngresoPlatos.setText(menu.toString());
+                String tN, tP, tC, tPr;
+                tN=textIngresoNombre.getText();
+                tP=textIngresoPrecio.getText();
+                tC=textIngresoCalorias.getText();
+                tPr=textIngresoPreparacion.getText();
+
+                if (!tN.isEmpty()&&!tP.isEmpty()&&!tC.isEmpty()&&!tPr.isEmpty() ){
+                    if (menu.ingresarPlato(new Plato(textIngresoNombre.getText(),Double.parseDouble(textIngresoPrecio.getText()),
+                            Double.parseDouble(textIngresoCalorias.getText()),Integer.parseInt(textIngresoPrecio.getText())))){
+                        textAIngresoPlatos.setText(menu.toString());
+                    }else {
+                        JOptionPane.showMessageDialog(null, "Plato ya existente");
+                    }
+                }else{
+                    textAIngresoPlatos.setText("Campos incompletos, complete todos los campos");
+                }
+
             }
         });
         QuemarDatosButton.addActionListener(new ActionListener() {
@@ -59,10 +74,8 @@ public class mainForm extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 BuscaPorNombre(textoModifNombre.getText());
-                modificarModifButton.setEnabled(true);
-                textoModifPrecio.setEnabled(true);
-                textoModifCalorias.setEnabled(true);
-                textoModifPreparacion.setEnabled(true);
+                textAIngresoPlatos.setText(null);
+
 
             }
         });
@@ -71,14 +84,19 @@ public class mainForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
             menu.ModificarDatos(textoModifNombre.getText(),Double.parseDouble(textoModifPrecio.getText()),Double.parseDouble(textoModifCalorias.getText()),Integer.parseInt(textoModifPreparacion.getText()));
-            limpiar();
-            textAModif.setText(menu.toString());
+            modificarModifButton.setEnabled(false);
+                textoModifPrecio.setEnabled(false);
+                textoModifCalorias.setEnabled(false);
+                textoModifPreparacion.setEnabled(false);
+            textAModif.setText(visualizarPlatoModificado());
+                limpiar();
             }
         });
         ButtonBuscarEliminar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                textAEliminar.setText(BuscaPorNombre(textNombreEliminar.getText()));
             }
         });
         eliminarButton.addActionListener(new ActionListener() {
@@ -86,11 +104,10 @@ public class mainForm extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Plato p=menu.eliminarPlato(textNombreEliminar.getText());
                 if (p!=null){
-                    JOptionPane.showMessageDialog(null, "Empleado eliminado correctamente");
+                    textAEliminar.setText("Plato eliminado correctamente");
                 }
                 limpiar();
-                btnModificar.setEnabled(false);
-                btnEliminar.setEnabled(false);
+
             }
         });
         mostrarButton.addActionListener(new ActionListener() {
@@ -118,15 +135,30 @@ public class mainForm extends JFrame {
     public JPanel getMainPanel() {
         return mainPanel;
     }
-    private void BuscaPorNombre(String nombre){
+    private String BuscaPorNombre(String nombre){
         Plato platoEncontrado= menu.BuscarPorNombre(nombre);
         if (platoEncontrado!=null){
             textoModifPrecio.setText(String.valueOf(platoEncontrado.getPrecio()));
             textoModifCalorias.setText(String.valueOf(platoEncontrado.getCalorias()));
             textoModifPreparacion.setText(String.valueOf(platoEncontrado.getTiempo()));
+            textoModifPrecio.setEnabled(true);
+            textoModifCalorias.setEnabled(true);
+            textoModifPreparacion.setEnabled(true);
+            modificarModifButton.setEnabled(true);
+            eliminarButton.setEnabled(true);
+            textAModif.setText("Plato encontrado");
+            return "\n"+ platoEncontrado;
         }else {
+
             textAModif.setText("Plato no encontrado");
+            return "Plato no encontrado";
         }
+    }
+    public String visualizarPlatoModificado(){
+        return "Nombre: " + textoModifNombre.getText().toString()+
+                "\nPrecio: "+ textoModifPrecio.getText()+
+                "\nCalorías: "+ textoModifCalorias.getText()+
+                "\nTiempo de preparación: "+ textoModifPreparacion.getText();
     }
     private void limpiar(){
         textoModifNombre.setText(null);
