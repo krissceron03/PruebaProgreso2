@@ -53,6 +53,7 @@ public class mainForm extends JFrame {
                     if (menu.ingresarPlato(new Plato(textIngresoNombre.getText(),Double.parseDouble(textIngresoPrecio.getText()),
                             Double.parseDouble(textIngresoCalorias.getText()),Integer.parseInt(textIngresoPrecio.getText())))){
                         textAIngresoPlatos.setText(menu.toString());
+                        JOptionPane.showMessageDialog(null, "Plato ingresado correctamente");
                     }else {
                         JOptionPane.showMessageDialog(null, "Plato ya existente");
                     }
@@ -68,13 +69,14 @@ public class mainForm extends JFrame {
                 menu.datosQuemados();
                 JOptionPane.showMessageDialog(null, "Datos cargados correctamente");
                 textAIngresoPlatos.setText(menu.toString());
+                QuemarDatosButton.setEnabled(false);
             }
         });
         buscarModifButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 BuscaPorNombre(textoModifNombre.getText());
-                textAIngresoPlatos.setText(null);
+
 
 
             }
@@ -102,6 +104,7 @@ public class mainForm extends JFrame {
         eliminarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                eliminarButton.setEnabled(false);
                 Plato p=menu.eliminarPlato(textNombreEliminar.getText());
                 if (p!=null){
                     textAEliminar.setText("Plato eliminado correctamente");
@@ -113,6 +116,27 @@ public class mainForm extends JFrame {
         mostrarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            switch (comboBoxOrder.getSelectedIndex()){
+                case 0: //Cuando seleccione Nombre
+                    menu.ordenarPorNombre();
+                    textAMostrar.setText(menu.toString());
+                    break;
+                case 1: //Cuando seleccione Precio
+                     menu.ordenarPorPrecio();
+                    textAMostrar.setText(menu.toString());
+                     break;
+
+                case 2: //Cuando seleccione Calorías
+                    menu.ordenarPorCalorias();
+                    textAMostrar.setText(menu.toString());
+                    break;
+                case 3: //Cuando seleccione Tiempo de Preparación
+                    menu.ordenarPorTiempo();
+                    textAMostrar.setText(menu.toString());
+                    break;
+
+
+            }
 
             }
         });
@@ -126,6 +150,8 @@ public class mainForm extends JFrame {
         buscarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String opcionSeleccionada = comboBoxOrder.getSelectedItem().toString();
+                textAMostrar.setText(menu.buscarPlato(textBuscarPlatoOrden.getText(), opcionSeleccionada).toString());
 
             }
         });
@@ -166,4 +192,5 @@ public class mainForm extends JFrame {
         textoModifCalorias.setText(null);
         textoModifPreparacion.setText(null);
     }
+
 }

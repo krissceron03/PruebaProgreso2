@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Menu {
 private List<Plato> listaPlatos=new ArrayList<>();
-private Plato plato1;
+private Ordenamiento orden1=new Ordenamiento();;
 
 
 
@@ -16,6 +16,12 @@ private Plato plato1;
             return false;
         }
     }
+
+    /**
+     * Busqueda secuencial, busca los platos en base al nombre
+     * @param nombre
+     * @return
+     */
     public Plato BuscarPorNombre(String nombre) {
         for (Plato p: listaPlatos) {
             if (p.getNombre().equals(nombre)){
@@ -26,11 +32,11 @@ private Plato plato1;
         return null;
     }
     public void datosQuemados(){
-    listaPlatos.add(new Plato("Plato1",2.5, 2.4,4));
-    listaPlatos.add(new Plato("Plato2",3, 1.2,5));
-    listaPlatos.add(new Plato("Plato3",3.5, 3.4,6));
-    listaPlatos.add(new Plato("Plato4",4.5, 5.6,7));
-    listaPlatos.add(new Plato("Plato4",5.5, 7.8,8));
+    listaPlatos.add(new Plato("Plato1",9.5, 2.4,4));
+    listaPlatos.add(new Plato("Plato2",4, 11.2,2));
+    listaPlatos.add(new Plato("Plato3",1.5, 24.4,10));
+    listaPlatos.add(new Plato("Plato4",6.5, 3.6,1));
+    listaPlatos.add(new Plato("Plato4",3.5, 54.8,30));
     }
     public List<Plato> getListaPlatos() {
         return listaPlatos;
@@ -57,9 +63,59 @@ private Plato plato1;
         return null;
     }
 
+    /**
+     * Ordena por precio
+     */
+
+    public void ordenarPorPrecio(){
+
+        orden1.OrdenamientoBurbujaPorPrecio(listaPlatos);
+    }
+
+    /**
+     * Ordena por Nombre
+     */
+    public void ordenarPorNombre(){
+        orden1.OrdenamientoBurbujaPorNombre(listaPlatos);
+    }
+
+    /**
+     * Ordena por Calorías
+     */
+    public void ordenarPorCalorias(){
+        orden1.OrdenInsercionPorCalorias(listaPlatos);
+    }
+
+    /**
+     * Ordena por Tiempo
+     */
+    public void ordenarPorTiempo(){
+        orden1.OrdenInsercionPorTiempo(listaPlatos);
+    }
+
     @Override
     public String toString() {
         return "Menu:" +
                 "ListaPlatos:" + listaPlatos;
+    }
+    public List<Plato> buscarPlato(String valor, String opcion) {
+        switch (opcion) {
+            case "Nombre":
+                //ordenarPorNombre();
+                return orden1.busquedaBinariaNombre(valor,listaPlatos);
+            case "Precio":
+                //ordenarPorPrecio();
+                double precio = Double.parseDouble(valor);
+                return orden1.busquedaBinariaPrecio(precio,listaPlatos);
+            case "Calorias":
+                //ordenarPorCalorias();
+                int calorias = Integer.parseInt(valor);
+                return orden1.busquedaBinariaCalorias(calorias,listaPlatos);
+            case "Minutos":
+                //orden.ordenamientoInsercionMinutos(lista);
+                int minutos = Integer.parseInt(valor);
+                return orden1.busquedaBinariaMinutos(minutos, listaPlatos);
+        }
+        return null;
     }
 }
